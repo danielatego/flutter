@@ -25,6 +25,7 @@ void main() {
   LeakTesting.collectedLeaksReporter = _verifyLeaks;
   LeakTesting.enable();
 
+<<<<<<< HEAD
   LeakTesting.settings = LeakTesting.settings
       .withTrackedAll()
       .withTracked(allNotDisposed: true, experimentalAllNotGCed: true)
@@ -33,6 +34,45 @@ void main() {
     testHelperExceptions: <RegExp>[
       RegExp(RegExp.escape(memoryLeakTestsFilePath()))
     ],
+=======
+  // It is important that the test file starts with group, to test that leaks are collected for all tests after group too.
+  group('Group', () {
+    testWidgets('test', (_) async {
+      StatelessLeakingWidget();
+    });
+  });
+
+  testWidgets(_test1TrackingOnNoLeaks = 'test1, tracking-on, no leaks', (WidgetTester widgetTester) async {
+    expect(LeakTracking.isStarted, true);
+    expect(LeakTracking.phase.name, _test1TrackingOnNoLeaks);
+    expect(LeakTracking.phase.ignoreLeaks, false);
+    await widgetTester.pumpWidget(Container());
+  });
+
+  testWidgets(
+    _test2TrackingOffLeaks = 'test2, tracking-off, leaks',
+    experimentalLeakTesting: LeakTesting.settings.withIgnoredAll(),
+  (WidgetTester widgetTester) async {
+    await widgetTester.pumpWidget(StatelessLeakingWidget());
+  });
+
+  testWidgets(_test3TrackingOnLeaks = 'test3, tracking-on, leaks', (WidgetTester widgetTester) async {
+    expect(LeakTracking.isStarted, true);
+    expect(LeakTracking.phase.name, _test3TrackingOnLeaks);
+    expect(LeakTracking.phase.ignoreLeaks, false);
+    await widgetTester.pumpWidget(StatelessLeakingWidget());
+  });
+
+  testWidgets(
+    _test4TrackingOnWithCreationStackTrace = 'test4, tracking-on, with creation stack trace',
+    experimentalLeakTesting: LeakTesting.settings.withCreationStackTrace(),
+  (WidgetTester widgetTester) async {
+      expect(LeakTracking.isStarted, true);
+      expect(LeakTracking.phase.name, _test4TrackingOnWithCreationStackTrace);
+      expect(LeakTracking.phase.ignoreLeaks, false);
+      await widgetTester.pumpWidget(StatelessLeakingWidget());
+    },
+>>>>>>> 1b197762c5 (Roll engine version to 968e2945. (#142275))
   );
 
   for (final LeakTestCase test in memoryLeakTests) {
