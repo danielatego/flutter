@@ -234,6 +234,7 @@ platform_properties:
       $flutter/osx_sdk : >-
         {
           "sdk_version": "15a240d"
+<<<<<<< HEAD
         }
   mac_x64_ios:
     properties:
@@ -252,6 +253,8 @@ platform_properties:
       $flutter/osx_sdk : >-
         {
           "sdk_version": "15a240d"
+=======
+>>>>>>> 838b885aa7 ([CP] Update tests to Xcode 15 (#142320))
         }
   mac_arm64_ios:
     properties:
@@ -4500,6 +4503,28 @@ targets:
         ["devicelab", "ios", "mac"]
       task_name: flavors_test_ios
 
+<<<<<<< HEAD
+=======
+  - name: Mac_arm64_ios flavors_test_ios_xcode_debug
+    recipe: devicelab/devicelab_drone
+    presubmit: false
+    timeout: 60
+    properties:
+      tags: >
+        ["devicelab", "ios", "mac"]
+      task_name: flavors_test_ios_xcode_debug
+    bringup: true
+
+  - name: Mac_ios flutter_gallery_ios__compile
+    recipe: devicelab/devicelab_drone
+    presubmit: false
+    timeout: 60
+    properties:
+      tags: >
+        ["devicelab", "ios", "mac"]
+      task_name: flutter_gallery_ios__compile
+
+>>>>>>> 838b885aa7 ([CP] Update tests to Xcode 15 (#142320))
   - name: Mac_arm64_ios flutter_gallery_ios__compile
     recipe: devicelab/devicelab_drone
     presubmit: false
@@ -4518,6 +4543,19 @@ targets:
         ["devicelab", "ios", "mac"]
       task_name: flutter_gallery_ios__start_up
 
+<<<<<<< HEAD
+=======
+  - name: Mac_ios flutter_gallery_ios__start_up_xcode_debug
+    recipe: devicelab/devicelab_drone
+    presubmit: false
+    timeout: 60
+    properties:
+      tags: >
+        ["devicelab", "ios", "mac"]
+      task_name: flutter_gallery_ios__start_up_xcode_debug
+    bringup: true
+
+>>>>>>> 838b885aa7 ([CP] Update tests to Xcode 15 (#142320))
   - name: Mac_ios flutter_view_ios__start_up
     recipe: devicelab/devicelab_drone
     presubmit: false
@@ -4526,6 +4564,18 @@ targets:
       tags: >
         ["devicelab", "ios", "mac"]
       task_name: flutter_view_ios__start_up
+<<<<<<< HEAD
+=======
+
+  - name: Mac_ios hello_world_ios__compile
+    recipe: devicelab/devicelab_drone
+    presubmit: false
+    timeout: 60
+    properties:
+      tags: >
+        ["devicelab", "ios", "mac"]
+      task_name: hello_world_ios__compile
+>>>>>>> 838b885aa7 ([CP] Update tests to Xcode 15 (#142320))
 
   - name: Mac_arm64_ios hello_world_ios__compile
     recipe: devicelab/devicelab_drone
@@ -4594,6 +4644,19 @@ targets:
         ["devicelab", "ios", "mac"]
       task_name: integration_ui_ios_driver
 
+<<<<<<< HEAD
+=======
+  - name: Mac_ios integration_ui_ios_driver_xcode_debug
+    recipe: devicelab/devicelab_drone
+    presubmit: false
+    timeout: 60
+    properties:
+      tags: >
+        ["devicelab", "ios", "mac"]
+      task_name: integration_ui_ios_driver_xcode_debug
+    bringup: true
+
+>>>>>>> 838b885aa7 ([CP] Update tests to Xcode 15 (#142320))
   - name: Mac_ios integration_ui_ios_frame_number
     recipe: devicelab/devicelab_drone
     presubmit: false
@@ -4647,6 +4710,27 @@ targets:
         ["devicelab", "hostonly", "mac", "arm64"]
       task_name: ios_app_with_extensions_test
 
+<<<<<<< HEAD
+=======
+  - name: Mac_ios ios_content_validation_test
+    recipe: devicelab/devicelab_drone
+    presubmit: false
+    timeout: 60
+    properties:
+      tags: >
+        ["devicelab", "ios", "mac"]
+      task_name: ios_content_validation_test
+
+  - name: Mac_arm64_ios ios_content_validation_test
+    recipe: devicelab/devicelab_drone
+    presubmit: false
+    timeout: 60
+    properties:
+      tags: >
+        ["devicelab", "ios", "mac", "arm64"]
+      task_name: ios_content_validation_test
+
+>>>>>>> 838b885aa7 ([CP] Update tests to Xcode 15 (#142320))
   - name: Mac_ios ios_defines_test
     recipe: devicelab/devicelab_drone
     presubmit: false
@@ -4709,6 +4793,20 @@ targets:
         ["devicelab", "ios", "mac"]
       task_name: microbenchmarks_ios
 
+<<<<<<< HEAD
+=======
+  # TODO(vashworth): Remove after Xcode 15 and iOS 17 are in CI (https://github.com/flutter/flutter/issues/132128)
+  - name: Mac_ios microbenchmarks_ios_xcode_debug
+    recipe: devicelab/devicelab_drone
+    presubmit: false
+    timeout: 60
+    properties:
+      tags: >
+        ["devicelab", "ios", "mac"]
+      task_name: microbenchmarks_ios_xcode_debug
+    bringup: true
+
+>>>>>>> 838b885aa7 ([CP] Update tests to Xcode 15 (#142320))
   - name: Mac native_assets_ios_simulator
     recipe: devicelab/devicelab_drone
     presubmit: false
@@ -4866,6 +4964,7 @@ targets:
       tags: >
         ["devicelab", "ios", "mac"]
       task_name: hot_mode_dev_cycle_ios__benchmark
+<<<<<<< HEAD
 
   - name: Mac_arm64_ios hot_mode_dev_cycle_ios__benchmark
     recipe: devicelab/devicelab_drone
@@ -4877,6 +4976,8 @@ targets:
         ["devicelab", "ios", "mac"]
       # TODO(vashworth): Use "hot_mode_dev_cycle_ios__benchmark" once https://github.com/flutter/flutter/issues/142305 is fixed.
       task_name: hot_mode_dev_cycle_ios__benchmark_no_dds
+=======
+>>>>>>> 838b885aa7 ([CP] Update tests to Xcode 15 (#142320))
 
   - name: Mac_x64 hot_mode_dev_cycle_ios_simulator
     recipe: devicelab/devicelab_drone
@@ -4927,7 +5028,11 @@ targets:
         ["devicelab", "ios", "mac"]
       task_name: flutter_gallery__transition_perf_e2e_ios
       drone_dimensions: >
+<<<<<<< HEAD
         ["device_os=iOS-17","os=Mac-13", "cpu=x86"]
+=======
+        ["device_os=iOS-16","os=Mac-13", "cpu=x86"]
+>>>>>>> 838b885aa7 ([CP] Update tests to Xcode 15 (#142320))
 
   - name: Mac_ios animated_blur_backdrop_filter_perf_ios__timeline_summary
     recipe: devicelab/devicelab_drone
