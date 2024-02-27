@@ -57,7 +57,11 @@ dependencies:
   http_multi_server: 3.2.1
   convert: 3.1.1
   async: 2.11.0
+<<<<<<< HEAD
   unified_analytics: 5.8.8+1
+=======
+  unified_analytics: 5.8.0+1
+>>>>>>> 7482962148 ([CP-stable] Bump hotfix version for `package:unified_analytics` (#143885))
 
   cli_config: 0.2.0
   graphs: 2.3.1
@@ -126,7 +130,11 @@ dartdoc:
   nodoc: true
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # PUBSPEC CHECKSUM: 067f
 =======
 # PUBSPEC CHECKSUM: 45be
 >>>>>>> 71680ed0fe (CP: [Beta] Update DWDS to version 23.0.0+1 (#142168))
+=======
+# PUBSPEC CHECKSUM: a81b
+>>>>>>> 7482962148 ([CP-stable] Bump hotfix version for `package:unified_analytics` (#143885))
