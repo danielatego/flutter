@@ -2388,3 +2388,404 @@ flutter:
         FeatureFlags: () => TestFeatureFlags(isNativeAssetsEnabled: true, isMacOSEnabled: true),
       });
 }
+<<<<<<< HEAD
+=======
+
+// This implements [dds.DartDevelopmentService], not the [DartDevelopmentService]
+// interface from package:flutter_tools.
+class FakeDartDevelopmentService extends Fake implements dds.DartDevelopmentService {
+  @override
+  Future<void> get done => Future<void>.value();
+
+  @override
+  Uri? get uri => null;
+}
+
+class FakeDartDevelopmentServiceException implements dds.DartDevelopmentServiceException {
+  FakeDartDevelopmentServiceException({this.message = defaultMessage});
+
+  @override
+  final int errorCode = dds.DartDevelopmentServiceException.existingDdsInstanceError;
+
+  @override
+  final String message;
+  static const String defaultMessage = 'A DDS instance is already connected at http://localhost:8181';
+}
+
+class TestFlutterDevice extends FlutterDevice {
+  TestFlutterDevice(super.device, { Stream<Uri>? vmServiceUris })
+    : _vmServiceUris = vmServiceUris, super(buildInfo: BuildInfo.debug, developmentShaderCompiler: const FakeShaderCompiler());
+
+  final Stream<Uri>? _vmServiceUris;
+
+  @override
+  Stream<Uri> get vmServiceUris => _vmServiceUris!;
+}
+
+class ThrowingForwardingFileSystem extends ForwardingFileSystem {
+  ThrowingForwardingFileSystem(super.delegate);
+
+  @override
+  File file(dynamic path) {
+    if (path == 'foo') {
+      throw const FileSystemException();
+    }
+    return delegate.file(path);
+  }
+}
+
+class FakeFlutterDevice extends Fake implements FlutterDevice {
+  FakeVmServiceHost? Function()? vmServiceHost;
+  Uri? testUri;
+  UpdateFSReport report = UpdateFSReport(
+    success: true,
+    invalidatedSourcesCount: 1,
+  );
+  Exception? reportError;
+  Exception? runColdError;
+  int runHotCode = 0;
+  int runColdCode = 0;
+
+  @override
+  ResidentCompiler? generator;
+
+  @override
+  DevelopmentShaderCompiler get developmentShaderCompiler => const FakeShaderCompiler();
+
+  @override
+  TargetPlatform targetPlatform = TargetPlatform.android;
+
+  @override
+  Stream<Uri?> get vmServiceUris => Stream<Uri?>.value(testUri);
+
+  @override
+  FlutterVmService? get vmService => vmServiceHost?.call()?.vmService;
+
+  DevFS? _devFS;
+
+  @override
+  DevFS? get devFS => _devFS;
+
+  @override
+  set devFS(DevFS? value) { }
+
+  @override
+  Device? device;
+
+  @override
+  Future<void> stopEchoingDeviceLog() async { }
+
+  @override
+  Future<void> initLogReader() async { }
+
+  @override
+  Future<Uri> setupDevFS(String fsName, Directory rootDirectory) async {
+    return testUri!;
+  }
+
+  @override
+  Future<int> runHot({required HotRunner hotRunner, String? route}) async {
+    return runHotCode;
+  }
+
+  @override
+  Future<int> runCold({required ColdRunner coldRunner, String? route}) async {
+    if (runColdError != null) {
+      throw runColdError!;
+    }
+    return runColdCode;
+  }
+
+  @override
+  Future<void> connect({
+    ReloadSources? reloadSources,
+    Restart? restart,
+    CompileExpression? compileExpression,
+    GetSkSLMethod? getSkSLMethod,
+    FlutterProject? flutterProject,
+    PrintStructuredErrorLogMethod? printStructuredErrorLogMethod,
+    int? hostVmServicePort,
+    int? ddsPort,
+    bool disableServiceAuthCodes = false,
+    bool enableDds = true,
+    bool cacheStartupProfile = false,
+    required bool allowExistingDdsInstance,
+    bool ipv6 = false,
+  }) async { }
+
+  @override
+  Future<UpdateFSReport> updateDevFS({
+    required Uri mainUri,
+    String? target,
+    AssetBundle? bundle,
+    DateTime? firstBuildTime,
+    bool bundleFirstUpload = false,
+    bool bundleDirty = false,
+    bool fullRestart = false,
+    String? projectRootPath,
+    required String pathToReload,
+    required String dillOutputPath,
+    required List<Uri> invalidatedFiles,
+    required PackageConfig packageConfig,
+  }) async {
+    if (reportError != null) {
+      throw reportError!;
+    }
+    return report;
+  }
+
+  @override
+  Future<void> updateReloadStatus(bool wasReloadSuccessful) async { }
+}
+
+class FakeDelegateFlutterDevice extends FlutterDevice {
+  FakeDelegateFlutterDevice(
+    super.device,
+    BuildInfo buildInfo,
+    ResidentCompiler residentCompiler,
+    this.fakeDevFS,
+  ) : super(buildInfo: buildInfo, generator: residentCompiler, developmentShaderCompiler: const FakeShaderCompiler());
+
+  @override
+  Future<void> connect({
+    ReloadSources? reloadSources,
+    Restart? restart,
+    bool enableDds = true,
+    bool cacheStartupProfile = false,
+    bool disableServiceAuthCodes = false,
+    bool ipv6 = false,
+    CompileExpression? compileExpression,
+    GetSkSLMethod? getSkSLMethod,
+    FlutterProject? flutterProject,
+    int? hostVmServicePort,
+    int? ddsPort,
+    PrintStructuredErrorLogMethod? printStructuredErrorLogMethod,
+    bool allowExistingDdsInstance = false,
+  }) async { }
+
+
+  final DevFS fakeDevFS;
+
+  @override
+  DevFS? get devFS => fakeDevFS;
+
+  @override
+  set devFS(DevFS? value) {}
+}
+
+class FakeResidentCompiler extends Fake implements ResidentCompiler {
+  CompilerOutput? nextOutput;
+  bool didSuppressErrors = false;
+
+  @override
+  Future<CompilerOutput?> recompile(
+    Uri mainUri,
+    List<Uri>? invalidatedFiles, {
+    required String outputPath,
+    required PackageConfig packageConfig,
+    String? projectRootPath,
+    required FileSystem fs,
+    bool suppressErrors = false,
+    bool checkDartPluginRegistry = false,
+    File? dartPluginRegistrant,
+    Uri? nativeAssetsYaml,
+  }) async {
+    didSuppressErrors = suppressErrors;
+    return nextOutput ?? const CompilerOutput('foo.dill', 0, <Uri>[]);
+  }
+
+  @override
+  void accept() { }
+
+  @override
+  void reset() { }
+}
+
+class FakeProjectFileInvalidator extends Fake implements ProjectFileInvalidator {
+  @override
+  Future<InvalidationResult> findInvalidated({
+    required DateTime? lastCompiled,
+    required List<Uri> urisToMonitor,
+    required String packagesPath,
+    required PackageConfig packageConfig,
+    bool asyncScanning = false,
+  }) async {
+    return InvalidationResult(
+      packageConfig: packageConfig,
+      uris: <Uri>[Uri.parse('file:///hello_world/main.dart'),
+    ]);
+  }
+}
+
+class FakeDevice extends Fake implements Device {
+  FakeDevice({
+    String sdkNameAndVersion = 'Android',
+    TargetPlatform targetPlatform = TargetPlatform.android_arm,
+    bool isLocalEmulator = false,
+    this.supportsHotRestart = true,
+    this.supportsScreenshot = true,
+    this.supportsFlutterExit = true,
+  }) : _isLocalEmulator = isLocalEmulator,
+       _targetPlatform = targetPlatform,
+       _sdkNameAndVersion = sdkNameAndVersion;
+
+  final bool _isLocalEmulator;
+  final TargetPlatform _targetPlatform;
+  final String _sdkNameAndVersion;
+
+  bool disposed = false;
+  bool appStopped = false;
+  bool failScreenshot = false;
+
+  @override
+  bool supportsHotRestart;
+
+  @override
+  bool supportsScreenshot;
+
+  @override
+  bool supportsFlutterExit;
+
+  @override
+  PlatformType get platformType => _targetPlatform == TargetPlatform.web_javascript
+    ? PlatformType.web
+    : PlatformType.android;
+
+  @override
+  Future<String> get sdkNameAndVersion async => _sdkNameAndVersion;
+
+  @override
+  Future<TargetPlatform> get targetPlatform async => _targetPlatform;
+
+  @override
+  Future<bool> get isLocalEmulator async => _isLocalEmulator;
+
+  @override
+  String get name => 'FakeDevice';
+
+  @override
+  late DartDevelopmentService dds;
+
+  @override
+  Future<void> dispose() async {
+    disposed = true;
+  }
+
+  @override
+  Future<bool> stopApp(ApplicationPackage? app, {String? userIdentifier}) async {
+    appStopped = true;
+    return true;
+  }
+
+  @override
+  Future<void> takeScreenshot(File outputFile) async {
+    if (failScreenshot) {
+      throw Exception();
+    }
+    outputFile.writeAsBytesSync(List<int>.generate(1024, (int i) => i));
+  }
+
+  @override
+  FutureOr<DeviceLogReader> getLogReader({
+    ApplicationPackage? app,
+    bool includePastLogs = false,
+  }) => NoOpDeviceLogReader(name);
+
+  @override
+  DevicePortForwarder portForwarder = const NoOpDevicePortForwarder();
+}
+
+class FakeDevFS extends Fake implements DevFS {
+  @override
+  DateTime? lastCompiled = DateTime(2000);
+
+  @override
+  PackageConfig? lastPackageConfig = PackageConfig.empty;
+
+  @override
+  List<Uri> sources = <Uri>[];
+
+  @override
+  Uri baseUri = Uri();
+
+  @override
+  Future<void> destroy() async { }
+
+  @override
+  Set<String> assetPathsToEvict = <String>{};
+
+  @override
+  Set<String> shaderPathsToEvict = <String>{};
+
+  @override
+  Set<String> scenePathsToEvict = <String>{};
+
+  @override
+  bool didUpdateFontManifest = false;
+
+  UpdateFSReport nextUpdateReport = UpdateFSReport(success: true);
+
+  @override
+  bool hasSetAssetDirectory = false;
+
+  @override
+  Future<Uri> create() async {
+    return Uri();
+  }
+
+  @override
+  void resetLastCompiled() {
+    lastCompiled = null;
+  }
+
+  @override
+  Future<UpdateFSReport> update({
+    required Uri mainUri,
+    required ResidentCompiler generator,
+    required bool trackWidgetCreation,
+    required String pathToReload,
+    required List<Uri> invalidatedFiles,
+    required PackageConfig packageConfig,
+    required String dillOutputPath,
+    required DevelopmentShaderCompiler shaderCompiler,
+    DevelopmentSceneImporter? sceneImporter,
+    DevFSWriter? devFSWriter,
+    String? target,
+    AssetBundle? bundle,
+    DateTime? firstBuildTime,
+    bool bundleFirstUpload = false,
+    bool fullRestart = false,
+    String? projectRootPath,
+    File? dartPluginRegistrant,
+  }) async {
+    return nextUpdateReport;
+  }
+}
+
+class FakeShaderCompiler implements DevelopmentShaderCompiler {
+  const FakeShaderCompiler();
+
+  @override
+  void configureCompiler(
+    TargetPlatform? platform, {
+    required ImpellerStatus impellerStatus,
+  }) { }
+
+  @override
+  Future<DevFSContent> recompileShader(DevFSContent inputShader) {
+    throw UnimplementedError();
+  }
+}
+
+const FakeVmServiceRequest renderFrameRasterStats = FakeVmServiceRequest(
+  method: kRenderFrameWithRasterStatsMethod,
+  args: <String, Object>{
+    'viewId': 'a',
+    'isolateId': '1',
+  },
+  error: FakeRPCError(
+    code: RPCErrorCodes.kServerError,
+    error: 'Raster status not supported on Impeller backend',
+  ),
+);
+>>>>>>> 481d49b6ee ([CP-stable] catch rpc error in render frame with raster stats (#144564))
