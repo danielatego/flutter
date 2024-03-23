@@ -5029,10 +5029,14 @@ targets:
       task_name: flutter_gallery__transition_perf_e2e_ios
       drone_dimensions: >
 <<<<<<< HEAD
+<<<<<<< HEAD
         ["device_os=iOS-17","os=Mac-13", "cpu=x86"]
 =======
         ["device_os=iOS-16","os=Mac-13", "cpu=x86"]
 >>>>>>> 838b885aa7 ([CP] Update tests to Xcode 15 (#142320))
+=======
+        ["device_os=iOS-17","os=Mac-13", "cpu=x86"]
+>>>>>>> f1f410681f ([CP] Run tests on iOS 17 exclusively (#144022) (#145181))
 
   - name: Mac_ios animated_blur_backdrop_filter_perf_ios__timeline_summary
     recipe: devicelab/devicelab_drone
